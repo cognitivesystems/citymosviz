@@ -5,7 +5,9 @@
 #include <QTimer>
 #include <QHostAddress>
 #include <QMetaType>
-#include "citymosinf.h"
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 #include "agent.h"
 #include <vector>
 
@@ -17,7 +19,7 @@ class Subscriber : public QMQTT::Client
     Q_OBJECT
 
 public:
-    explicit Subscriber(const QHostAddress& host = QHostAddress::LocalHost,
+    Subscriber(const QHostAddress& host = QHostAddress::LocalHost,
                         const quint16 port = 1883,
                         const QString topic = "", QObject* parent = NULL);
     virtual ~Subscriber();
@@ -32,7 +34,7 @@ public slots:
     void onReceived(const QMQTT::Message& message);
 
 signals:
-    void sendAgents(const qint8& type, const Agents&);
+    void sendAgents(const qint16& type, const Agents&);
 
 private:
     QString topic_;

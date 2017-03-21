@@ -12,7 +12,7 @@ Subscriber::Subscriber(const QHostAddress& host,
     connect(this, &Subscriber::connected, this, &Subscriber::onConnected);
     connect(this, &Subscriber::subscribed, this, &Subscriber::onSubscribed);
     connect(this, &Subscriber::received, this, &Subscriber::onReceived);
-    connect(this, SIGNAL(sendAgents(qint8, Agents)), MainWindow::instance(), SLOT(receiveAgents(qint16, Agents)));
+    QObject::connect(this, SIGNAL(sendAgents(qint16, Agents)), MainWindow::instance(), SLOT(receiveAgents(qint16, Agents)));
 }
 
 Subscriber::~Subscriber()
@@ -33,7 +33,38 @@ void Subscriber::onSubscribed(const QString& topic)
 
 void Subscriber::onReceived(const QMQTT::Message& message)
 {
-    _qout << "publish received: \"" << QString::fromUtf8(message.payload())
-          << "\"" << endl;
+
+    //_qout << "publish received: \"";// << QString::fromUtf8(message.payload())
+    //<< "\"" << endl;
+
+    QJsonObject obj;
+    QJsonDocument doc = QJsonDocument::fromJson(message.payload());
+    obj = doc.object();
+
+    //qDebug() << obj;
+
+    QJsonArray jsonArray = obj["pedestrians"].toArray();
+
+    qDebug() << jsonArray.size();
+
+    Agents agents_data;
+    foreach (const QJsonValue & value, jsonArray) {
+        QJsonObject p_obj = value.toObject();
+
+        Agent a;
+        a.id=p_obj["id"].toInt();
+        QJsonObject tr_array = p_obj["translate"].toObject();
+        a.setPosition(QVector3D(tr_array["x"].toDouble(), tr_array["y"].toDouble(), tr_array["z"].toDouble()));
+        QJsonObject v_array = p_obj["velocity"].toObject();
+        a.setVelocity(QVector3D(v_array["x"].toDouble(), v_array["y"].toDouble(), v_array["z"].toDouble()));
+
+        agents_data.push_back(a);
+    }
+
+    qint16 type =0;
+    qDebug()<< "Sending agents --> " << type << " " << agents_data.size();
+
+    sendAgents(type, agents_data);
+
 }
 

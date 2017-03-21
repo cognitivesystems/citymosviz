@@ -10,6 +10,7 @@ find_package(Qt5OpenGL)
 find_package(Qt5Network)
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
 
 # OpenGL & GLEW library
 find_package(OpenGL)

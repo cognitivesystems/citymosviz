@@ -1,11 +1,13 @@
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent) :
-    QMainWindow(parent)
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
 {
 
     MainWindow::singleton_ = this;
 
+    ui->setupUi(this);
     cmos.addSubscriber(QString("localhost"), 1883, "pedsim/update");
 
 }
@@ -31,8 +33,16 @@ MainWindow::instance()
     return MainWindow::singleton_;
 }
 
-void MainWindow::receiveAgents(const qint8 &type, const Agents &data)
+void MainWindow::receiveAgents(const qint16 &type, const Agents &data)
 {
+    qDebug() << "Received --> " << type << " " << data.size();
+
+    for ( const Agent agent_data : data) {
+        qDebug() << agent_data.id;
+        qDebug() << agent_data.translate;
+        qDebug() << agent_data.velocity;
+    }
+
 
 }
 

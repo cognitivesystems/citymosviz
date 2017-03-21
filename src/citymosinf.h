@@ -2,7 +2,7 @@
 #define CITYMOSINF_H
 
 #include "mqttsubscriber.h"
-#include <vector>
+#include <QVector>
 
 class CityMosInf: QObject
 {
@@ -16,7 +16,7 @@ public:
 
 private:
 
-    std::vector<Subscriber* > subs_;
+    QVector<Subscriber* > subs_;
 
 };
 
