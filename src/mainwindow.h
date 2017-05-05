@@ -5,14 +5,38 @@
 #include <QGLWidget>
 #include <QDebug>
 #include <QWindow>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QAbstractScrollArea>
+#include <QScrollBar>
+#include <QColor>
+#include <QPen>
+#include <QWheelEvent>
+#include <QMouseEvent>
 #include <cmath>
 #include <iostream>
 #include "citymosinf.h"
+#include "osgwidget.h"
 #include "ui_mainwindow.h"
+#include <iostream>
+#include <random>
+#include <osgViewer/Viewer>
+#include "roadnetwork.h"
 
 namespace Ui {
 class MainWindow;
 }
+
+enum ModelType{
+    sphere=1,
+    square=2
+};
+
+struct ObjectModel{
+    qint16 id;
+    ModelType type;
+
+};
 
 class MainWindow : public QMainWindow{
 
@@ -23,30 +47,36 @@ public:
     virtual ~MainWindow();
 
     static MainWindow* instance();
-
-    //    void initializeGL();
-
-    //    void qgluPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar);
-
-    //    /// @note camera decides renderer size
-    //    void resizeGL(int width, int height);
-
-    //    void paintGL();
+    void setupGui();
 
 public slots:
-    void receiveAgents(const qint16& type, const Agents& data);
+    void receiveAgents(const Agents& data);
 
 protected:
     MainWindow(QWidget* parent = NULL);
-
     void closeEvent(QCloseEvent *event);
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *ui_;
 
     static MainWindow* singleton_;
 
-    CityMosInf cmos;
+    QtOSGWidget* viewer_;
+
+    CityMosInf cmos_;
+
+//    QMap<QString, SoTransform* > model_transform_map_;
+
+    std::random_device rdevice_;
+    std::mt19937 gen_;
+    std::uniform_int_distribution<> dis_;
+
+    QMap<QString, QColor> color_map_;
+
+    bool pan_=true;
+    int panStartX_, panStartY_;
+
+    RoadNetwork roads_;
 
 };
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Intersections version="1.0" xsi:schemaLocation="http://xenon.tum-create.edu.sg SEMSim_Intersections.xsd" xmlns="http://xenon.tum-create.edu.sg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Intersection type="SStaticIntersection" id="57">
+        <Phase duration="45000" order="0">
+            <link>8017</link>
+            <link>125436</link>
+        </Phase>
+        <Phase duration="5000" order="1"/>
+        <Phase duration="45000" order="2">
+            <link>116596</link>
+            <link>135178</link>
+        </Phase>
+        <Phase duration="5000" order="3"/>
+        <Phase duration="45000" order="4">
+            <link>202809</link>
+            <link>204238</link>
+        </Phase>
+        <Phase duration="5000" order="5"/>
+        <Phase duration="45000" order="6">
+            <link>93549</link>
+            <link>15405</link>
+        </Phase>
+        <Phase duration="5000" order="7"/>
+    </Intersection>
+    <Intersection type="SStaticIntersection" id="58">
+        <Phase duration="45000" order="0">
+            <link>107405</link>
+            <link>127932</link>
+        </Phase>
+        <Phase duration="5000" order="1"/>
+        <Phase duration="45000" order="2">
+            <link>128713</link>
+            <link>173100</link>
+        </Phase>
+        <Phase duration="5000" order="3"/>
+        <Phase duration="45000" order="4">
+            <link>32464</link>
+            <link>115441</link>
+        </Phase>
+        <Phase duration="5000" order="5"/>
+        <Phase duration="45000" order="6">
+            <link>46402</link>
+            <link>174778</link>
+        </Phase>
+        <Phase duration="5000" order="7"/>
+    </Intersection>
+    <Intersection type="SStaticIntersection" id="248">
+        <Phase duration="45000" order="0">
+            <link>102897</link>
+            <link>145108</link>
+        </Phase>
+        <Phase duration="5000" order="1"/>
+        <Phase duration="45000" order="2">
+            <link>177987</link>
+            <link>118770</link>
+        </Phase>
+        <Phase duration="5000" order="3"/>
+        <Phase duration="45000" order="4">
+            <link>52425</link>
+        </Phase>
+        <Phase duration="5000" order="5"/>
+    </Intersection>
+</Intersections>

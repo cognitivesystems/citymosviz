@@ -11,6 +11,7 @@ class Agent : public QObject
     Q_OBJECT
 
     Q_PROPERTY(qint16 id READ getId WRITE setId)
+    Q_PROPERTY(qint16 type READ getType WRITE setType)
     Q_PROPERTY(QVector3D translate READ getPosition WRITE setPosition)
     Q_PROPERTY(QVector3D velocity READ getVelocity WRITE setVelocity)
 
@@ -20,6 +21,7 @@ public:
 
     Agent(const Agent& c){
         this->id=c.id;
+        this->type=c.type;
         this->translate=c.translate;
         this->velocity=c.velocity;
     }
@@ -30,6 +32,14 @@ public:
 
     int getId(){
         return id;
+    }
+
+    int setType(const quint16 t){
+        type=t;
+    }
+
+    int getType(){
+        return type;
     }
 
     void setPosition( const QVector3D& p){
@@ -51,6 +61,7 @@ public:
 
 public:
     quint16 id;
+    quint16 type;
     QVector3D translate;
     QVector3D velocity;
 };

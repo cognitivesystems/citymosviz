@@ -4,20 +4,60 @@ cmake_minimum_required(VERSION 2.8.12)
 set (CMAKE_CXX_FLAGS "--std=gnu++11 ${CMAKE_CXX_FLAGS}")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+set (CMAKE_PREFIX_PATH "/opt/Qt5")
+
 # Qt library
 find_package(Qt5Widgets)
 find_package(Qt5OpenGL)
 find_package(Qt5Network)
+find_package(Qt5Xml)
+find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgGA osgUtil osgViewer)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
 # OpenGL & GLEW library
-find_package(OpenGL)
 
-INCLUDE_DIRECTORIES(/usr/include/x86_64-linux-gnu/qt5/qmqtt)
-# executable
-add_executable(citymosviz src/main.cpp src/mainwindow.h src/mainwindow.cpp src/citymosinf.h src/citymosinf.cpp src/mqttsubscriber.h src/mqttsubscriber.cpp
-    src/agent.h src/agent.cpp)
-qt5_use_modules(citymosviz Widgets OpenGL Network)
-target_link_libraries(citymosviz ${QT_LIBRARIES} ${OPENGL_LIBRARIES} qmqtt)
+INCLUDE_DIRECTORIES(/usr/include/x86_64-linux-gnu/qt5/qmqtt
+    {OPENSCENEGRAPH_INCLUDE_DIRS})
+
+QT5_WRAP_UI(MOC_UI_SRCS
+            src/mainwindow.ui
+)
+
+#QT5_WRAP_CPP(MOC_SRCS
+#            src/mainwindow.h
+#            src/citymosinf.h
+#            src/mqttsubscriber.h
+#            src/agent.h
+#)
+
+SET(HDRS
+    src/mainwindow.h
+    src/osgwidget.h
+    src/citymosinf.h
+    src/mqttsubscriber.h
+    src/mqttvehiclesubscriber.h
+    src/mqttpedestriansubscriber.h
+    src/agent.h
+    src/roadnetwork.h
+)
+
+SET(SRCS
+    src/mainwindow.cpp
+    src/osgwidget.cpp
+    src/citymosinf.cpp
+    src/mqttsubscriber.cpp
+    src/mqttvehiclesubscriber.cpp
+    src/mqttpedestriansubscriber.cpp
+    src/agent.cpp
+    src/roadnetwork.cpp
+    src/main.cpp
+)
+
+add_executable(citymosviz ${MOC_UI_SRCS} ${MOC_SRCS} ${HDRS} ${SRCS})
+qt5_use_modules(citymosviz Widgets OpenGL Network Xml)
+target_link_libraries(citymosviz
+    ${OPENSCENEGRAPH_LIBRARIES}
+    qmqtt)

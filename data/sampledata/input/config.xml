@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<semsim version="2.1" experimentName="SEMSim 1.0" xmlns="http://xenon.tum-create.edu.sg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xenon.tum-create.edu.sg SEMSim_Config.xsd">
+	<runtime>
+		<binaryFile>SEMSim_traffic</binaryFile>
+		<routing_network encrypted="false">
+			<network id="1" name="crazy routing">/home/jiajian/input/[sampledata]routing.xml</network>
+		</routing_network>
+		<road_network encrypted="false">/home/jiajian/input/[sampledata]road_network.xml</road_network>
+		<intersections encrypted="false">/home/jiajian/input/[sampledata]intersection_control.xml</intersections>
+		<itinerary encrypted="false" type="probabilistic">/home/jiajian/input/[sampledata]turning_probabilities.xml</itinerary>
+		<output broadcastToServer="false">
+			<server useVisualisation="false">
+				<host/>
+				<port/>
+			</server>
+			<file useVisualisation="false"/>
+			<dataitems defaultoutputpath="/home/jiajian/SEMSim_output">
+			</dataitems>
+		</output>
+		<openMP_threads>1</openMP_threads>
+	</runtime>
+	<simulation numberofReplications="1">
+		<numberofAgents>300</numberofAgents>
+		<simtime>
+			<start>0.0</start>
+			<duration>5</duration>
+		</simtime>
+		<agentTypes>
+			<agentType ratio="1.0" name="small with IDM" id="1">
+				<routing>
+					<network typeId="1">1.0</network>
+				</routing>
+				<driver name="Standard Driver">
+		          <model name="Intelligent Driver Model">
+		            <attribute name="minimum Gap" type="double">
+		              <double>2.0</double>
+		            </attribute>
+		            <attribute name="maximum Acceleration" type="distribution">
+		              <uniform>
+		                <a>1.4</a>
+		                <b>2.0</b>
+		              </uniform>
+		            </attribute>
+		            <attribute name="maximum Deceleration" type="distribution">
+		              <uniform>
+		                <a>1.8</a>
+		                <b>2.2</b>
+		              </uniform>
+		            </attribute>
+		            <attribute name="time Head Way" type="double">
+		              <double>1.0</double>
+		            </attribute>
+		          </model>
+		        </driver>
+		        <vehicle name="Null Vehicle">
+		          <model name="Minimum Characteristics">
+		            <attribute name="Length" type="double">
+		              <double>350</double>
+		            </attribute>
+		            <attribute name="Weight" type="distribution">
+		              <uniform>
+		                <a>850</a>
+		                <b>1200</b>
+		              </uniform>
+		            </attribute>
+		          </model>
+		        </vehicle>
+			</agentType>
+		</agentTypes>
+	</simulation>
+</semsim>

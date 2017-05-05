@@ -11,18 +11,24 @@
 #include "agent.h"
 #include <vector>
 
-typedef std::vector<Agent> Agents;
+typedef std::vector<Agent > Agents;
 Q_DECLARE_METATYPE(Agents);
 
-class Subscriber : public QMQTT::Client
+enum SubType{
+    vehicle=1,
+    pedestrian=2
+};
+
+
+class MQTTSubscriber : public QMQTT::Client
 {
     Q_OBJECT
 
 public:
-    Subscriber(const QHostAddress& host = QHostAddress::LocalHost,
+    MQTTSubscriber(const QHostAddress& host = QHostAddress::LocalHost,
                         const quint16 port = 1883,
                         const QString topic = "", QObject* parent = NULL);
-    virtual ~Subscriber();
+    virtual ~MQTTSubscriber();
 
     QTextStream _qout;
 
@@ -31,10 +37,7 @@ public slots:
 
     void onSubscribed(const QString& topic);
 
-    void onReceived(const QMQTT::Message& message);
-
-signals:
-    void sendAgents(const qint16& type, const Agents&);
+    virtual void onReceived(const QMQTT::Message& message)=0;
 
 private:
     QString topic_;

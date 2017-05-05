@@ -1,7 +1,8 @@
 #ifndef CITYMOSINF_H
 #define CITYMOSINF_H
 
-#include "mqttsubscriber.h"
+#include "mqttvehiclesubscriber.h"
+#include "mqttpedestriansubscriber.h"
 #include <QVector>
 
 class CityMosInf: QObject
@@ -12,11 +13,11 @@ public:
     CityMosInf();
     ~CityMosInf();
 
-    void addSubscriber(const QString ip, const quint16 port, const QString topic);
+    void addSubscriber(const SubType type, const QString ip, const quint16 port, const QString topic);
 
 private:
 
-    QVector<Subscriber* > subs_;
+    QVector<MQTTSubscriber* > subs_;
 
 };
 
