@@ -9,16 +9,11 @@ int
 main(int argc, char** argv){
     try{
 
-        std::cout << __LINE__ << std::endl;
-
         QApplication app(argc, argv);
-        std::cout << __LINE__ << std::endl;
 
         QObject::connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
-        std::cout << __LINE__ << std::endl;
 
         MainWindow::instance()->show();
-        std::cout << __LINE__ << std::endl;
 
         return app.exec();
     }

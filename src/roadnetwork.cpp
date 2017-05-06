@@ -8,6 +8,7 @@ RoadNetwork::~RoadNetwork(){
 
 void RoadNetwork::parse(const QString filename)
 {
+
     //load the file
     QFile xmlFile(filename);
     if (!xmlFile.exists() || !xmlFile.open(QFile::ReadOnly | QFile::Text)) {
@@ -18,9 +19,10 @@ void RoadNetwork::parse(const QString filename)
     doc.setContent(&xmlFile);
 
     QDomNodeList lanes = doc.elementsByTagName("lane");
-    qDebug() << lanes.size();
+//    qDebug() << lanes.size();
 
     for (int i = 0; i < lanes.size(); i++) {
+
         QDomNode n = lanes.item(i);
         QDomElement from = n.firstChildElement("fromPoint");
         QDomElement to = n.firstChildElement("toPoint");
@@ -49,6 +51,10 @@ void RoadNetwork::parse(const QString filename)
 
 //        qDebug() << lane.p1();
 //        qDebug() << lane.p2();
+
+//        if(i==0){
+//            break;
+//        }
 
     }
 

@@ -21,20 +21,21 @@ MQTTPedestrianSubscriber::~MQTTPedestrianSubscriber()
 void MQTTPedestrianSubscriber::onReceived(const QMQTT::Message& message)
 {
 
-    _qout << "publish received: \"";// << QString::fromUtf8(message.payload())
+    //    _qout << "publish received: \"";// << QString::fromUtf8(message.payload())
     //<< "\"" << endl;
+
+//    _qout << QString::fromUtf8(message.payload());
 
     QJsonObject obj;
     QJsonDocument doc = QJsonDocument::fromJson(message.payload());
     obj = doc.object();
 
-    //qDebug() << obj;
+//    qDebug() << obj;
 
     qint16 type=1;
 
     QJsonArray jsonArray = obj["pedestrians"].toArray();
 
-    qDebug() << jsonArray.size();
 
     Agents agents_data;
     foreach (const QJsonValue & value, jsonArray) {
@@ -49,6 +50,7 @@ void MQTTPedestrianSubscriber::onReceived(const QMQTT::Message& message)
 
         a.type=type;
         agents_data.push_back(a);
+
     }
 
     qDebug()<< "Sending pedestrian agents --> " << agents_data.size();

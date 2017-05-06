@@ -7,11 +7,12 @@ MainWindow::MainWindow(QWidget* parent) :
     MainWindow::singleton_ = this;
     setupGui();
 
-    roads_.parse(QString("network.xml"));
-    viewer_->addNetwork(roads_);
+    roads_.parse(QString("road.xml"));
+    //    viewer_->addNetwork(roads_);
 
-    cmos_.addSubscriber(SubType::pedestrian, QString("10.25.191.91"), 1883, "pedsim/update");
     cmos_.addSubscriber(SubType::vehicle, QString("10.25.191.170"), 1883, "citymos/vehicles/update");
+    cmos_.addSubscriber(SubType::pedestrian, QString("10.25.191.170"), 1883, "pedsim/update");
+
 }
 
 MainWindow::~MainWindow()
@@ -49,17 +50,16 @@ void MainWindow::setupGui()
 
 void MainWindow::receiveAgents(const Agents &data)
 {
-//    qDebug() << "Received --> " << type << " " << data.size();
+    //    qDebug() << "Received --> " << type << " " << data.size();
 
     static bool init_done=false;
+
     if(!init_done){
-        viewer_->addModels(data);
-        viewer_->updateScene();
+        viewer_->addNetwork(roads_);
         init_done=true;
     }
-    else{
-        viewer_->updateModels(data);
-        viewer_->updateScene();
-    }
+
+    viewer_->updateModels(data);
+    viewer_->updateScene();
 }
 

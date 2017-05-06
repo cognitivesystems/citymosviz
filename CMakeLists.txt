@@ -12,7 +12,10 @@ find_package(Qt5Widgets)
 find_package(Qt5OpenGL)
 find_package(Qt5Network)
 find_package(Qt5Xml)
+find_package(Qt5Svg)
+find_package(Qt5Charts)
 find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgGA osgUtil osgViewer)
+find_package(Boost COMPONENTS system)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -20,7 +23,7 @@ set(CMAKE_AUTOUIC ON)
 # OpenGL & GLEW library
 
 INCLUDE_DIRECTORIES(/usr/include/x86_64-linux-gnu/qt5/qmqtt
-    {OPENSCENEGRAPH_INCLUDE_DIRS})
+    {OPENSCENEGRAPH_INCLUDE_DIRS} ${Boost_INCLUDE_DIR})
 
 QT5_WRAP_UI(MOC_UI_SRCS
             src/mainwindow.ui
@@ -57,7 +60,9 @@ SET(SRCS
 )
 
 add_executable(citymosviz ${MOC_UI_SRCS} ${MOC_SRCS} ${HDRS} ${SRCS})
-qt5_use_modules(citymosviz Widgets OpenGL Network Xml)
+
+qt5_use_modules(citymosviz Widgets OpenGL Network Xml Charts)
+
 target_link_libraries(citymosviz
-    ${OPENSCENEGRAPH_LIBRARIES}
+    ${OPENSCENEGRAPH_LIBRARIES} ${Boost_LIBRARIES}
     qmqtt)

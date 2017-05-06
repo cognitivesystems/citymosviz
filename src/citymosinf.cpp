@@ -15,8 +15,8 @@ CityMosInf::~CityMosInf(){
 void CityMosInf::addSubscriber(const SubType type, const QString ip, const quint16 port, const QString topic)
 {
     QHostAddress addr(ip);
-    qDebug() << ip;
-    qDebug() << port;
+//    qDebug() << ip;
+//    qDebug() << port;
     if(type==SubType::vehicle){
         subs_.push_back(new MQTTVehicleSubscriber(addr, port, topic));
         subs_.back()->connectToHost();

@@ -22,6 +22,7 @@
 #include <random>
 #include <osgViewer/Viewer>
 #include "roadnetwork.h"
+#include <cmath>
 
 namespace Ui {
 class MainWindow;
@@ -65,7 +66,7 @@ private:
 
     CityMosInf cmos_;
 
-//    QMap<QString, SoTransform* > model_transform_map_;
+    //    QMap<QString, SoTransform* > model_transform_map_;
 
     std::random_device rdevice_;
     std::mt19937 gen_;
@@ -77,7 +78,6 @@ private:
     int panStartX_, panStartY_;
 
     RoadNetwork roads_;
-
 };
 
 #endif // MAINWINDOW_H

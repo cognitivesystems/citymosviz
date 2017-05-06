@@ -5,6 +5,7 @@
 #include <QScreen>
 #include <QtGlobal>
 #include <QWindow>
+#include <QVector3D>
 #include <QMap>
 
 #include <osg/ref_ptr>
@@ -23,6 +24,8 @@
 #include "roadnetwork.h"
 #include <iostream>
 #include <stdio.h>
+
+#include "gnuplot-iostream.h"
 
 class QtOSGWidget : public QOpenGLWidget
 {
@@ -96,38 +99,100 @@ public:
 
         laneGeom->setVertexArray(laneVerts);
         osg::Vec4Array* colors = new osg::Vec4Array;
-        colors->push_back(osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f) ); //index 0 blue-ish
+        colors->push_back(osg::Vec4(0.0f, 0.0f, 0.0f, 1.0f) ); //index 0 blue-ish
         laneGeom->setColorArray(colors);
         laneGeom->setColorBinding(osg::Geometry::BIND_OVERALL);
         return laneGeom;
     }
 
-
     void addNetwork(const RoadNetwork& net){
-        std::cout << "adding lanes " << std::endl;
 
-        osg::Geometry* geom=getLaneGeometry(net.lanes_);
-        osg::Geode* geode=new osg::Geode();
-        geode->addDrawable(geom);
+        static int counter=0;
+        for(const QLine lane:net.lanes_){
 
-        osg::PositionAttitudeTransform* transform;
-        transform = new osg::PositionAttitudeTransform();
-        osg::Vec3 position;
-        position.set(0,0,0);
-        transform->addChild(geode);
+            osg::Vec3 p1=osg::Vec3(lane.p1().x(),0.0f,lane.p1().y());
+            osg::Vec3 p2=osg::Vec3(lane.p2().x(),0.0f,lane.p2().y());
+//            Agent a;
+//            a.type=3;
+//            a.id=counter++;
+//            a.translate.setX(p1.x());
+//            a.translate.setY(p1.y());
+//            a.translate.setZ(p1.z());
+//            addModel(a);
+//            a.id=counter++;
+//            a.translate.setX(p2.x());
+//            a.translate.setY(p2.y());
+//            a.translate.setZ(p2.z());
+//            addModel(a);
 
-        root_->addChild(transform);
+            osg::Vec3 center=osg::Vec3(p1.x()+(p2.x()-p1.x())/2.0f,
+                                       p1.y()+(p2.y()-p1.y())/2.0f,
+                                       p1.z()+(p2.z()-p1.z())/2.0f);
+
+
+            //            osg::Vec3 center=p1;
+
+            float dist = std::sqrt(std::pow(p1.x()-p2.x(), 2)
+                                   + std::pow(p1.y()-p2.y(), 2)
+                                   + std::pow(p1.z()-p2.z(), 2));
+
+            std::cout << "dist --> " << dist << std::endl;
+            osg::Box* box    = new osg::Box(center, dist, 0.01, 1.0 );
+
+            osg::ShapeDrawable* sd = new osg::ShapeDrawable( box);
+
+            sd->setColor( osg::Vec4(0.0f, 0.0f, 1.0f, 0.7f ) );
+
+            osg::PositionAttitudeTransform* transform;
+            transform = new osg::PositionAttitudeTransform();
+
+            std::cout << "center --> " << center.x() << " " << center.z() << std::endl;
+            double angle=std::atan2(p1.z()-p2.z(), p1.x()-p2.x());
+
+            std::cout << "angle --> " << angle << std::endl;
+            osg::Quat q(0, osg::Vec3(0, 0, 0));
+            q.makeRotate(-angle, 0, 1, 0);
+            box->setRotation(q);
+
+            osg::Geode* geode=new osg::Geode();
+            geode->addDrawable(sd);
+            root_->addChild(geode);
+
+        }
     }
 
     void addModel(const Agent ag){
-        std::cout << "adding agent " << ag.type << std::endl;
-        osg::Sphere* sphere    = new osg::Sphere( osg::Vec3( 0.f, 0.f, 0.f ), 10.0f );
-        osg::ShapeDrawable* sd = new osg::ShapeDrawable( sphere );
-        if(ag.type==23966){
-            sd->setColor( osg::Vec4(1.0f, 0.0f, 0.0f, 1.f ) );
+        std::cout << "adding agent " << ag.type << " " << ag.id << std::endl;
+
+        QString name;
+        name.append(QString::number(ag.type));
+        name.append("_");
+        name.append(QString::number(ag.id));
+
+        float radius;
+        if(name==QString("1_1")){
+            radius=7.0f;
         }
         else{
+            radius=3.0f;
+        }
+
+        osg::Sphere* sphere    = new osg::Sphere( osg::Vec3( 0.f, 0.f, 0.f ), radius );
+        osg::ShapeDrawable* sd = new osg::ShapeDrawable( sphere );
+        if(ag.type==0){
+            sd->setColor( osg::Vec4(1.0f, 0.0f, 0.0f, 1.f ) );
+        }
+        else if(ag.type==1){
             sd->setColor( osg::Vec4(0.0f, 1.0f, 0.0f, 1.f ) );
+        }
+        else if(ag.type==2){
+            sd->setColor( osg::Vec4(0.0f, 1.0f, 1.0f, 1.f ) );
+        }
+        else if(ag.type==3){
+            sd->setColor( osg::Vec4(1.0f, 1.0f, 0.0f, 1.f ) );
+        }
+        else{
+            sd->setColor( osg::Vec4(0.0f, 0.0f, 0.0f, 0.7f ) );
         }
 
         osg::PositionAttitudeTransform* transform;
@@ -135,13 +200,13 @@ public:
         osg::Vec3 position;
         qDebug() << ag.translate;
         position.set(ag.translate.x(),ag.translate.y(),ag.translate.z());
+
         transform->setPosition( position );
         osg::Geode* geode=new osg::Geode();
         geode->addDrawable(sd);
         transform->addChild(geode);
-
         root_->addChild(transform);
-        QString name=QString::number(ag.id);
+
         model_transform_map_[name]=transform;
     }
 
@@ -155,15 +220,20 @@ public:
 
         osg::Vec3 position;
         position.set(ag.translate.x(),ag.translate.y(),ag.translate.z());
-        QString name=QString::number(ag.id);
+        QString name;
+        name.append(QString::number(ag.type));
+        name.append("_");
+        name.append(QString::number(ag.id));
         osg::PositionAttitudeTransform* transform=model_transform_map_[name];
         transform->setPosition( position );
-
-//        std::cout << "Update ---> " << position.x() << " " << position.y() << " " << position.z() << std::endl;
+        //        std::cout << "Update ---> " << ag.type << " " << ag.id << " " << position.x() << " " << position.y() << " " << position.z() << std::endl;
     }
 
     bool modelExists(const Agent ag){
-        QString name=QString::number(ag.id);
+        QString name;
+        name.append(QString::number(ag.type));
+        name.append("_");
+        name.append(QString::number(ag.id));
         if(model_transform_map_[name]==NULL){
             return false;
         }
@@ -182,12 +252,16 @@ public:
                 addModel(ag);
             }
         }
+        usleep(10000);
     }
 
     void removeModels(const Agents ags){
 
         for(const Agent ag:ags){
-            QString name=QString::number(ag.id);
+            QString name;
+            name.append(QString::number(ag.type));
+            name.append("_");
+            name.append(QString::number(ag.id));
             root_->removeChild(model_transform_map_[name]);
             model_transform_map_.remove(name);
         }
