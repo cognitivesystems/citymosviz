@@ -11,6 +11,9 @@
 #include <iostream>
 #include <vector>
 #include <QLine>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 class RoadNetwork : public QObject
 {
@@ -19,10 +22,13 @@ public:
     RoadNetwork(QObject* parent = 0);
     ~RoadNetwork();
 
-    void parse(const QString filename);
+    void parseRoads(const QString filename);
+    void parseSideWalk(const QString filename);
 
 public:
     std::vector<QLine > lanes_;
+    std::vector<QLine > side_walks_;
+
 };
 
 

@@ -7,8 +7,8 @@ MainWindow::MainWindow(QWidget* parent) :
     MainWindow::singleton_ = this;
     setupGui();
 
-    roads_.parse(QString("road.xml"));
-    //    viewer_->addNetwork(roads_);
+    roads_.parseRoads(QString("road.xml"));
+    roads_.parseSideWalk(QString("sidewalk_points.json"));
 
     cmos_.addSubscriber(SubType::vehicle, QString("10.25.191.170"), 1883, "citymos/vehicles/update");
     cmos_.addSubscriber(SubType::pedestrian, QString("10.25.191.170"), 1883, "pedsim/update");
@@ -60,6 +60,7 @@ void MainWindow::receiveAgents(const Agents &data)
     }
 
     viewer_->updateModels(data);
+    viewer_->updateVisibility();
     viewer_->updateScene();
 }
 
