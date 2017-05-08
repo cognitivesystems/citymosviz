@@ -6,6 +6,7 @@
 #include <QVector3D>
 #include <iostream>
 
+
 class Agent : public QObject
 {
     Q_OBJECT
@@ -14,6 +15,7 @@ class Agent : public QObject
     Q_PROPERTY(qint16 type READ getType WRITE setType)
     Q_PROPERTY(QVector3D translate READ getPosition WRITE setPosition)
     Q_PROPERTY(QVector3D velocity READ getVelocity WRITE setVelocity)
+
 
 public:
     Agent(QObject* parent = 0);

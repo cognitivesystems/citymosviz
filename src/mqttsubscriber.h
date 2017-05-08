@@ -8,10 +8,9 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
-#include "agent.h"
 #include <vector>
+#include "defs.h"
 
-typedef std::vector<Agent > Agents;
 Q_DECLARE_METATYPE(Agents);
 
 enum SubType{

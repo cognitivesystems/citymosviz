@@ -30,6 +30,4 @@ public:
     std::vector<QLine > side_walks_;
 
 };
-
-
 #endif // ROADNETWORK_H
