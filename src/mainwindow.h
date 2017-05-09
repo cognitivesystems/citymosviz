@@ -4,15 +4,6 @@
 #include <QMainWindow>
 #include <QGLWidget>
 #include <QDebug>
-#include <QWindow>
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QAbstractScrollArea>
-#include <QScrollBar>
-#include <QColor>
-#include <QPen>
-#include <QWheelEvent>
-#include <QMouseEvent>
 #include <cmath>
 #include <iostream>
 #include "citymosinf.h"
@@ -28,23 +19,12 @@ namespace Ui {
 class MainWindow;
 }
 
-enum ModelType{
-    sphere=1,
-    square=2
-};
-
-struct ObjectModel{
-    qint16 id;
-    ModelType type;
-
-};
 
 class MainWindow : public QMainWindow{
 
     Q_OBJECT
 
 public:
-
     virtual ~MainWindow();
 
     static MainWindow* instance();
@@ -65,8 +45,6 @@ private:
     QtOSGWidget* viewer_;
 
     CityMosInf cmos_;
-
-    //    QMap<QString, SoTransform* > model_transform_map_;
 
     std::random_device rdevice_;
     std::mt19937 gen_;

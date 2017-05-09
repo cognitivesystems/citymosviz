@@ -206,8 +206,6 @@ void QtOSGWidget::updateModel(const Agent ag){
     osg::PositionAttitudeTransform* transform=model_transform_map_[name];
     transform->setPosition( position );
     timers_map_[name].restart();
-
-    //        std::cout << "Update ---> " << ag.type << " " << ag.id << " " << position.x() << " " << position.y() << " " << position.z() << std::endl;
 }
 
 bool QtOSGWidget::modelExists(const Agent ag){

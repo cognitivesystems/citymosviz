@@ -6,7 +6,6 @@
 #include <QVector3D>
 #include <iostream>
 
-
 class Agent : public QObject
 {
     Q_OBJECT

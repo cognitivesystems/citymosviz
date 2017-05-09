@@ -50,8 +50,6 @@ void MainWindow::setupGui()
 
 void MainWindow::receiveAgents(const Agents &data)
 {
-    //    qDebug() << "Received --> " << type << " " << data.size();
-
     static bool init_done=false;
 
     if(!init_done){
