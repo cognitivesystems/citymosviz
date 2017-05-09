@@ -9,7 +9,9 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <vector>
-#include "defs.h"
+#include "agent.h"
+
+typedef std::vector<Agent > Agents;
 
 Q_DECLARE_METATYPE(Agents);
 

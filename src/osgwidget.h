@@ -23,8 +23,8 @@
 #include <osgGA/TrackballManipulator>
 #include <osg/PositionAttitudeTransform>
 #include <iostream>
-#include "defs.h"
 #include "roadnetwork.h"
+#include "mqttsubscriber.h"
 
 class QtOSGWidget : public QOpenGLWidget
 {

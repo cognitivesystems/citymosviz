@@ -45,7 +45,7 @@ SET(HDRS
     src/mqttpedestriansubscriber.h
     src/agent.h
     src/roadnetwork.h
-    src/defs.h
+    #src/defs.h
 )
 
 SET(SRCS
