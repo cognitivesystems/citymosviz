@@ -42,6 +42,7 @@ SET(HDRS
     src/citymosinf.h
     src/mqttsubscriber.h
     src/mqttvehiclesubscriber.h
+    src/mqttsrtsubscriber.h
     src/mqttpedestriansubscriber.h
     src/agent.h
     src/roadnetwork.h
@@ -53,6 +54,7 @@ SET(SRCS
     src/osgwidget.cpp
     src/citymosinf.cpp
     src/mqttsubscriber.cpp
+    src/mqttsrtsubscriber.cpp
     src/mqttvehiclesubscriber.cpp
     src/mqttpedestriansubscriber.cpp
     src/agent.cpp

@@ -3,8 +3,7 @@
 MQTTSubscriber::MQTTSubscriber(const QHostAddress& host,
                        const quint16 port,
                        const QString topic, QObject* parent)
-    : QMQTT::Client(host, port, parent),topic_(topic), _qout(stdout)
-{
+    : QMQTT::Client(host, port, parent),topic_(topic), _qout(stdout){
     qDebug() << "Initializing subscriber.";
     qRegisterMetaType<Agents >("Agents");
 
@@ -12,19 +11,16 @@ MQTTSubscriber::MQTTSubscriber(const QHostAddress& host,
     connect(this, &MQTTSubscriber::subscribed, this, &MQTTSubscriber::onSubscribed);
 }
 
-MQTTSubscriber::~MQTTSubscriber()
-{
+MQTTSubscriber::~MQTTSubscriber(){
 
 }
 
-void MQTTSubscriber::onConnected()
-{
+void MQTTSubscriber::onConnected(){
     _qout << "connected" << endl;
     subscribe(topic_, 0);
 }
 
-void MQTTSubscriber::onSubscribed(const QString& topic)
-{
+void MQTTSubscriber::onSubscribed(const QString& topic){
     _qout << "subscribed " << topic << endl;
 }
 

@@ -4,8 +4,7 @@
 MQTTPedestrianSubscriber::MQTTPedestrianSubscriber(const QHostAddress& host,
                                                    const quint16 port,
                                                    const QString topic, QObject* parent)
-    : MQTTSubscriber(host, port, topic, parent)
-{
+    : MQTTSubscriber(host, port, topic, parent){
 
 
     connect(this, &MQTTPedestrianSubscriber::received, this, &MQTTPedestrianSubscriber::onReceived);
@@ -13,13 +12,11 @@ MQTTPedestrianSubscriber::MQTTPedestrianSubscriber(const QHostAddress& host,
 
 }
 
-MQTTPedestrianSubscriber::~MQTTPedestrianSubscriber()
-{
+MQTTPedestrianSubscriber::~MQTTPedestrianSubscriber(){
 
 }
 
-void MQTTPedestrianSubscriber::onReceived(const QMQTT::Message& message)
-{
+void MQTTPedestrianSubscriber::onReceived(const QMQTT::Message& message){
 
     //    _qout << "publish received: \"";// << QString::fromUtf8(message.payload())
     //<< "\"" << endl;
