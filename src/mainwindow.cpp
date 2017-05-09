@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget* parent) :
 
     cmos_.addSubscriber(SubType::vehicle, QString("10.25.191.170"), 1883, "citymos/vehicles/update");
     cmos_.addSubscriber(SubType::pedestrian, QString("10.25.191.170"), 1883, "pedsim/update");
-
 }
 
 MainWindow::~MainWindow()
@@ -44,8 +43,8 @@ void MainWindow::setupGui()
     viewer_ = new QtOSGWidget(1, 1, MainWindow::instance());
 
     ui_->gridLayout_main->addWidget(viewer_, 0, 0);
-    this->setWindowIconText("CityMos Viz");
-    this->setWindowTitle("SCityMos Viz");
+    this->setWindowIconText("City Mobility Simulator - Visualisation");
+    this->setWindowTitle("City Mobility Simulator - Visualisation");
 }
 
 void MainWindow::receiveAgents(const Agents &data)
