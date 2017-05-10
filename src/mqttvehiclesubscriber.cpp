@@ -40,7 +40,14 @@ void MQTTVehicleSubscriber::onReceived(const QMQTT::Message& message)
         QJsonObject v_array = p_obj["velocity"].toObject();
         a.setVelocity(QVector3D(v_array["x"].toString().toDouble(), 0.0, v_array["y"].toString().toDouble()));
 
-        a.type=type;
+        QString name=p_obj["name"].toString();
+        if(name.compare(QString("car"))==0){
+            a.type=type;
+        }
+        else{
+            a.type=2;
+        }
+
         agents_data.push_back(a);
     }
 

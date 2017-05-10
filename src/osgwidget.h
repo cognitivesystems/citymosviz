@@ -12,6 +12,8 @@
 #include <osg/ref_ptr>
 #include <osgViewer/GraphicsWindow>
 #include <osgViewer/Viewer>
+#include <osg/Node>
+#include <osgDB/ReadFile>
 #include <osg/Camera>
 #include <osg/ShapeDrawable>
 #include <osg/StateSet>
@@ -39,6 +41,7 @@ public:
     void addNetwork(const RoadNetwork& net);
 
     void addModels(const Agents ags);
+    void addFP(const Agent ag);
     void updateModels(const Agents ags);
     void updateVisibility();
 

@@ -47,7 +47,6 @@ void MQTTPedestrianSubscriber::onReceived(const QMQTT::Message& message){
 
         a.type=type;
         agents_data.push_back(a);
-
     }
 
     qDebug()<< "Sending pedestrian agents --> " << agents_data.size();

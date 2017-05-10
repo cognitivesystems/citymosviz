@@ -146,6 +146,7 @@ void QtOSGWidget::addModel(const Agent ag){
     }
 
     osg::Sphere* sphere    = new osg::Sphere( osg::Vec3( 0.f, 0.f, 0.f ), radius );
+
     osg::ShapeDrawable* sd = new osg::ShapeDrawable( sphere );
     if(ag.type==0){
         sd->setColor( osg::Vec4(1.0f, 0.0f, 0.0f, 1.f ) );
@@ -191,11 +192,51 @@ void QtOSGWidget::addModel(const Agent ag){
 
 void QtOSGWidget::addModels(const Agents ags){
     for(const Agent ag:ags){
-        addModel(ag);
+        std::cout << "================ " << ag.type << " " << ag.id << std::endl;
+
+        if(ag.type==1 && ag.id==1){
+            addFP(ag);
+            throw;
+        }
+        else{
+            addModel(ag);
+        }
     }
 }
 
+void QtOSGWidget::addFP(const Agent ag)
+{
+    //        std::cout << "adding agent " << ag.type << " " << ag.id << std::endl;
+
+    osg::Node* fpNode = osgDB::readNodeFile("fpsphere.obj");
+
+    QString name;
+    name.append(QString::number(ag.type));
+    name.append("_");
+    name.append(QString::number(ag.id));
+
+    osg::PositionAttitudeTransform* transform;
+    transform = new osg::PositionAttitudeTransform();
+    osg::Vec3 position;
+    //        qDebug() << ag.translate;
+    position.set(ag.translate.x(),ag.translate.y(),ag.translate.z());
+
+    transform->setPosition( position );
+    transform->addChild(fpNode);
+    osg::Geode* geode=fpNode->asGeode();
+
+    transform->addChild(geode);
+    root_->addChild(transform);
+
+    model_transform_map_[name]=transform;
+    model_geode_map_[name]=geode;
+    QTime timer;
+    timers_map_[name]=timer;
+    timers_map_[name].restart();
+}
+
 void QtOSGWidget::updateModel(const Agent ag){
+
 
     osg::Vec3 position;
     position.set(ag.translate.x(),ag.translate.y(),ag.translate.z());
@@ -228,7 +269,12 @@ void QtOSGWidget::updateModels(const Agents ags){
             updateModel(ag);
         }
         else{
-            addModel(ag);
+            if(ag.type==1 && ag.id==1){
+                addFP(ag);
+            }
+            else{
+                addModel(ag);
+            }
         }
     }
 }
@@ -243,7 +289,10 @@ void QtOSGWidget::updateVisibility(){
         else{
             visible=true;
         }
-        model_geode_map_[key]->setNodeMask(visible ? 0xffffffff : 0x0);
+        qDebug() << key;
+        if(key.compare(QString("1_1"))!=0){
+            model_geode_map_[key]->setNodeMask(visible ? 0xffffffff : 0x0);
+        }
     }
 }
 
